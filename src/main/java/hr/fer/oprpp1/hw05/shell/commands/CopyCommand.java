@@ -84,7 +84,7 @@ public class CopyCommand implements ShellCommand {
 
     private void copy(Environment env, Path source, Path target){
         try(InputStream is = new BufferedInputStream(Files.newInputStream(source));
-            OutputStream os = new BufferedOutputStream(Files.newOutputStream(source))){
+            OutputStream os = new BufferedOutputStream(Files.newOutputStream(target))){
             byte[] bytearr = new byte[4096];
             while(true){
                 int i = is.read(bytearr);

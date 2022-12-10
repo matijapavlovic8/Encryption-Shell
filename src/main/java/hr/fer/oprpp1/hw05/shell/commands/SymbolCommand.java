@@ -30,15 +30,23 @@ public class SymbolCommand implements ShellCommand {
             return ShellStatus.CONTINUE;
         }
         if(len == 1){
-            switch (args[0].toLowerCase()){
-                case "prompt":
+            switch (args[0].toLowerCase()) {
+                case "prompt" -> {
                     env.writeln("Symbol for prompt is " + env.getPromptSymbol());
-                case "morelines":
+                    return ShellStatus.CONTINUE;
+                }
+                case "morelines" -> {
                     env.writeln("Symbol for morelines is " + env.getMorelinesSymbol());
-                case "multiline":
+                    return ShellStatus.CONTINUE;
+                }
+                case "multiline" -> {
                     env.writeln("Symbol for multiline is " + env.getMultilineSymbol());
-                default:
+                    return ShellStatus.CONTINUE;
+                }
+                default -> {
                     env.writeln("Invalid symbol name!");
+                    return ShellStatus.CONTINUE;
+                }
             }
 
         } else {

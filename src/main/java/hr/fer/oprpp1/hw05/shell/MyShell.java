@@ -1,10 +1,15 @@
 package hr.fer.oprpp1.hw05.shell;
 
 import hr.fer.oprpp1.hw05.shell.commands.CatCommand;
+import hr.fer.oprpp1.hw05.shell.commands.CharsetsCommand;
+import hr.fer.oprpp1.hw05.shell.commands.CopyCommand;
 import hr.fer.oprpp1.hw05.shell.commands.ExitCommand;
 import hr.fer.oprpp1.hw05.shell.commands.HelpCommand;
+import hr.fer.oprpp1.hw05.shell.commands.HexdumpCommand;
+import hr.fer.oprpp1.hw05.shell.commands.LsCommand;
 import hr.fer.oprpp1.hw05.shell.commands.MkdirCommand;
 import hr.fer.oprpp1.hw05.shell.commands.SymbolCommand;
+import hr.fer.oprpp1.hw05.shell.commands.TreeCommand;
 
 import java.util.Collections;
 import java.util.Objects;
@@ -162,6 +167,12 @@ public class MyShell implements Environment{
         this.commands.put("symbol", new SymbolCommand());
         this.commands.put("mkdir", new MkdirCommand());
         this.commands.put("exit", new ExitCommand());
+        this.commands.put("ls", new LsCommand());
+        this.commands.put("tree", new TreeCommand());
+        this.commands.put("hexdump", new HexdumpCommand());
+        this.commands.put("copy", new CopyCommand());
+        this.commands.put("cat", new CatCommand());
+        this.commands.put("charsets", new CharsetsCommand());
     }
 
     public static void main(String[] args) {
@@ -171,11 +182,19 @@ public class MyShell implements Environment{
             shell.writeln("Welcome to MyShell v 1.0");
             do {
                 shell.write(shell.getPromptSymbol().toString() + " ");
+                String[] input = shell.readLine().trim().split("\\s+", 2);
+                ShellCommand cmd = shell.commands.get(input[0]);
+                String arguments = input.length == 1 ? "" : input[1];
+                if(cmd == null) {
+                    shell.writeln("Invalid command!");
+                    continue;
+                }
+                shell.status = cmd.executeCommand(shell, arguments);
             } while (shell.status != ShellStatus.TERMINATE);
-        } catch (Exception e){
+        } catch (RuntimeException e){
             if(e.getClass() == ShellIOException.class)
-                shell.writeln(e.getMessage());
-
+                return;
+            shell.writeln(e.getMessage());
         }
 
 

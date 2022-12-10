@@ -92,6 +92,7 @@ public class LsCommand implements ShellCommand {
             .append(Files.isExecutable(file) ? "x " : "- ")
             .append(String.format("%10d ", Files.size(file)))
             .append(formattedDateTime)
+            .append(" ")
             .append(file.getFileName().toString());
 
         return sb.toString();
